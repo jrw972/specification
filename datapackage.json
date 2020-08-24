@@ -942,27 +942,27 @@
                         {
                             "name": "valid_from",
                             "description": "The date from which the schedule information is valid.",
-                            "type": "date",
+                            "type": "date"
                         },
                         {
                             "name": "valid_to",
                             "description": "The last date on which the schedule information is valid.",
-                            "type": "date",
+                            "type": "date"
                         },
                         {
                             "name": "dtstart",
                             "description": "iCal - The date of the first event is the schedule. Necessary when using the 'interval' feature",
-                            "type": "date",
+                            "type": "date"
                         },
                         {
                             "name": "until",
                             "description": "The date of the last occurence of the recurring event.",
-                            "type": "date",
+                            "type": "date"
                         },
                         {
                             "name": "wkst",
                             "description": "iCal - The day on which the week starts, eg MO.",
-                            "type": "date",
+                            "type": "date"
                         },
                         {
                             "name": "freq",
@@ -980,32 +980,32 @@
                         {
                             "name": "interval",
                             "description": "iCal - How often the frequency repeats. E.g. Interval 2 for Frequency WEEKLY gives Fortnightly",
-                            "type": "number",
+                            "type": "number"
                         },
                         {
                             "name": "byday",
                             "description": "iCal - Comma seperated days of the week. E.g. SU,MO,TU,WE,TH,FR,SA. Where freq is MONTHLY each part can be preceded by a positive or negative integer to represent which occurrence in a month; e.g. 2MO is the second Monday in a month. -1FR is the last Friday",
-                            "type": "string",
+                            "type": "string"
                         },
                         {
                             "name": "byweekno",
                             "description": "iCal - Comma seperated numeric weeks of the year if freq is WEEKLY. Can be negative to represent weeks before the end of the year; e.g. -5 is the 5th to last week in a year.",
-                            "type": "string",
+                            "type": "string"
                         },
                         {
                             "name": "bymonthday",
                             "description": "iCal - Comma separated numeric days of the month if frequency is MONTHLY. Can be negative to represent days before the end of the month; e.g. -5 is the 5th to last day in a month.",
-                            "type": "number",
+                            "type": "number"
                         },
                         {
                             "name": "byyearday",
                             "description": "iCal - Comma separated numeric days of the month if frequency is YEARLY. Can be negative to represent days before the end of the year; e.g. -1 is the last day in a year.",
-                            "type": "number",
+                            "type": "number"
                         },
                         {
                             "name": "description",
                             "description": "Human readable description of the availability of the service.",
-                            "type": "string",
+                            "type": "string"
                         }
                     ],
                     "primaryKey": "id",
