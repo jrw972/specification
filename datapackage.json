@@ -296,14 +296,6 @@
                                 "required":false
                             }
                         },
-                        {
-                            "name":"taxonomy_ids",
-                            "description":"(Deprecated) A comma separated list of identifiers from the taxonomy table. This field is deprecated in favour of using the service_taxonomy table.",
-                            "type":"string",
-                            "constraints": {
-                                "required":false
-                            }
-                        }
                     ],
                     "primaryKey": "id",
                     "foreignKeys": [
@@ -325,9 +317,9 @@
                 }
             },
             {
-                "name": "service_taxonomy",
-                "path": "services_taxonomy.csv",
-                "description":"The service taxonomy creates a link between a service and one or more classifications that describe the nature of the service provided.",
+                "name": "service_attribute",
+                "path": "service_attributes.csv",
+                "description":"The services attributes table creates a link between a service and one or more classifications that describe the nature of the service provided.",
                 "format": "csv",
                 "mediatype": "text/csv",
                 "schema": {
@@ -335,7 +327,7 @@
                         {
                             "name": "id",
                             "type": "string",
-                            "description":"Each service_taxonomy entry should have a unique identifier.",
+                            "description":"Each service_attribute entry should have a unique identifier.",
                             "constraints": {
                                 "required":true,
                                 "unique":true
@@ -350,18 +342,13 @@
                             }
                         },
                         {
-                            "name":"taxonomy_id",
+                            "name":"taxonomy_term_id",
                             "description":"The identifier of this taxonomy term from the taxonomy table.",
                             "type":"string",
                             "constraints": {
-                                "required":true
+                                "required":false
                             }
                         },
-                        {
-                            "name":"taxonomy_detail",
-                            "description":"For advanced uses, this field can indicate a constraint on this classification, using * to combine two taxonomy terms. For example: 'Food Pantry*Homeless' (where 'Food Pantry' and 'Homeless' are identifiers in the taxonomy table) to indicate a food pantry service for homeless clients, but not available to other client groups. In this example, there would be two entries in service_taxonomy, one with 'Food Pantry' and one for 'Homeless' in the taxonomy_id field, but both with the same 'Food Pantry*Homeless' value in the taxonomy_detail field.",
-                            "type":"string"
-                        }
                     ],
                     "primaryKey": "id",
                     "foreignKeys": [
@@ -373,9 +360,64 @@
                             }
                         },
                         {
-                            "fields": "taxonomy_id",
+                            "fields": "taxonomy_term_id",
                             "reference": {
-                                "resource": "taxonomy",
+                                "resource": "taxonomy_term",
+                                "fields": "id"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "other_attribute",
+                "path": "other_attributes.csv",
+                "description":"The other_attributes table creates a link between entities other than service and one or more classifications that describe the entity.",
+                "format": "csv",
+                "mediatype": "text/csv",
+                "schema": {
+                    "fields": [
+                        {
+                            "name": "id",
+                            "type": "string",
+                            "description":"Each other_attribute entry should have a unique identifier.",
+                            "constraints": {
+                                "required":true,
+                                "unique":true
+                            }
+                        },
+                        {
+                            "name": "link_id",
+                            "description": "The identifier of the entity to which this taxonomy term applies.",
+                            "type": "string",
+                            "constraints": {
+                                "required":true
+                            }
+                        },
+                        {
+                            "name": "link_type",
+                            "description": "The identifier of the entity to which this taxonomy term applies.",
+                            "type": "string",
+                            "constraints": {
+                                "required":true,
+                                "enum":["organization", "service_area", "location", "eligibility"]
+                            }
+                        },
+                        {
+                            "name":"taxonomy_term_id",
+                            "description":"The identifier of this taxonomy term from the taxonomy table.",
+                            "type":"string",
+                            "constraints": {
+                                "required":false
+                            }
+                        },
+                    ],
+                    "primaryKey": "id",
+                    "foreignKeys": [
+                        {
+                            "fields": "taxonomy_term_id",
+                            "reference": {
+                                "resource": "taxonomy_term",
                                 "fields": "id"
                             }
                         }
@@ -1356,16 +1398,16 @@
                 }
             },
             {
-                "name": "taxonomy",
-                "path": "taxonomy.csv",
-                "description": "Each service can be categorized according to one or more taxonomy terms. The taxonomy table contains a list of taxonomy identifiers, their names, and, for hierarchical taxonomies, their structure.",
+                "name": "taxonomy_term",
+                "path": "taxonomy_terms.csv",
+                "description": "Each service can be categorized according to one or more taxonomy terms. The taxonomy_term table contains a list of taxonomy terms, their names, and, for hierarchical taxonomies, their structure.",
                 "format": "csv",
                 "mediatype": "text/csv",
                 "schema": {
                     "fields": [
                         {
                             "name": "id",
-                            "description": "Each taxonomy entry must have a unique identifier. If combining multiple taxonomies with overlapping identifiers, use a prefix to distinguish them.",
+                            "description": "Each taxonomy term must have a unique identifier, within the scope of the dataset",
                             "type": "string",
                             "constraints": {
                                 "required":true,
@@ -1373,8 +1415,16 @@
                             }
                         },
                         {
-                            "name": "name",
-                            "description": "The name of this taxonomy term or category.",
+                            "name": "term",
+                            "description": "The taxonomy term itself.",
+                            "type": "string",
+                            "constraints": {
+                                "required":true
+                            }
+                        },
+                        {
+                            "name": "description",
+                            "description": "What the term means",
                             "type": "string",
                             "constraints": {
                                 "required":true
@@ -1382,23 +1432,15 @@
                         },
                         {
                             "name":"parent_id",
-                            "description":"If this is a child category in a hierarchical taxonomy, give the identifier of the parent category. For top-level categories, this should be left blank.",
+                            "description":"If this is a child term in a hierarchical taxonomy, give the identifier of the parent category. For top-level categories, this should be left blank.",
                             "type":"string",
                             "constraints": {
                                 "required":false
                             }
                         },
                         {
-                            "name":"parent_name",
-                            "description":"If this is a child category in a hierarchical taxonomy, give the name of the parent category. For top-level categories, this should be left blank.",
-                            "type":"string",
-                            "constraints": {
-                                "required":false
-                            }
-                        },
-                        {
-                            "name":"vocabulary",
-                            "description":"If this is an established taxonomy, detail which taxonomy is in use. For example, AIRS or Open Eligibility.",
+                            "name":"taxonomy",
+                            "description":"If this is an established taxonomy, detail which taxonomy is in use. For example, AIRS or Open Eligibility. If possible, provide a URI.",
                             "type":"string",
                             "constraints":{
                                 "required":false
