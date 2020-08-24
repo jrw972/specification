@@ -295,7 +295,7 @@
                             "constraints":{
                                 "required":false
                             }
-                        },
+                        }
                     ],
                     "primaryKey": "id",
                     "foreignKeys": [
