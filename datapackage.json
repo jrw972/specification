@@ -138,7 +138,7 @@
                             }
                         },
                         {
-                            "name": "name",
+                            "name": "name_of_program",
                             "description": "The name of the program",
                             "type": "string",
                             "constraints": {
