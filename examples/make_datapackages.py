@@ -52,5 +52,7 @@ def make_for_example(directory):
 
 if __name__ == "__main__":
     for dir in glob(EXAMPLES_DIR+"/*/"):
+	if dir.endswith("all_resources"): # all_resources is special: we want it to break if there are resources missing
+		continue 
         make_for_example(dir)
 
